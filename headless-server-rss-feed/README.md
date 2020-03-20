@@ -1,4 +1,4 @@
-# Implementing an RSS Feed with node.js and the CoreMedia Headless Server 
+# Implementing an RSS Feed with node.js 
 
 ## Introduction
 
