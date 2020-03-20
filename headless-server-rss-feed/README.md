@@ -291,7 +291,3 @@ Assuming you have an RSS reader plugin installed in your browser, the result mig
 
 ![Example Feed](../images/feed.png "Example Feed")
  
- 
- ## Conclusion
- 
- 
