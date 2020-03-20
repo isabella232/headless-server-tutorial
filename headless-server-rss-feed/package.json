@@ -1,0 +1,21 @@
+{
+  "name": "headless-server-rss-feed",
+  "version": "1.0.0",
+  "description": "A sample application for the CoreMedia Headless Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CoreMedia/headless-server-tutorial"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "rss": "^1.2.2"
+  },
+  "license": "CoreMedia Open Source License"
+}
