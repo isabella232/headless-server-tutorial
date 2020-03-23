@@ -7,7 +7,7 @@ The result is a webapp that delivers an RSS feed with selected CoreMedia teaser 
 
 ## Prerequisites
 
-- Make sure that you have Node.js installed (this tutorial was developed with node 12.16).
+- Make sure that you have Node.js installed (this tutorial was developed with Node.js 12.16).
 - Make sure that you have npm installed.
 - Make sure that you have access to a CoreMedia system which includes a headless server.
 
@@ -15,7 +15,7 @@ The result is a webapp that delivers an RSS feed with selected CoreMedia teaser 
 
 ### Step 1: Project Setup
 
-For starting the development, we first have to setup a new project first. For Node.js this is rather simple:
+For starting the development, we have to setup a new project first. For Node.js this is rather simple:
 
 - Create a new folder called _headless-server-rss-feed_.
 - Create a new file called _package.json_ within it and paste the following content into it:
@@ -40,9 +40,12 @@ For starting the development, we first have to setup a new project first. For No
 }
 ```
 
-- Create a new file called _index.js_ within it. This is the main executable of our example . 
-We start with configuring the URL of your headless server. Paste the following snippet into your _index.js_ file 
+- Create a second file called _index.js_. This is the main executable of our example . 
+We start with configuring the URL of our headless server. 
+
+- Paste the following snippet into your _index.js_ file 
 and replace the _<YOUR_HEADLESS_SERVER_URL>_ with the URL of your headless server. 
+
 A CoreMedia installation comes with an overview page that contains all important URLs of the system.
 If you are not sure what the headless server URL is, you can also look it up there. 
 
@@ -57,9 +60,9 @@ and it will simply print the `Using headless server: ...` message.
 
 ### Step 2: Build a GraphQL Query for the CoreMedia Headless Server
 
-The CoreMedia system overview page also has a _GraphiQL_ link where you can test GraphQL queries against the headless server in your browser:
+The CoreMedia system overview page also has a _GraphiQL_ link where you can run GraphQL queries against the headless server in your browser:
 
-- Open the you https://<YOUR_HEADLESS_SERVER_URL>/graphiql
+- Open the URL _https://<YOUR_HEADLESS_SERVER_URL>/graphiql_
 - Paste the following query example into the query section of the website and press the execute button in the toolbar.
 
 ```
@@ -74,7 +77,7 @@ query {
 ```  
 
 As a result you will get a list of all available sites on your system, including their ids.
-Note the _id_ of your site, we need it for our next query. Since we want to create an RSS feed,
+Note the _id_ of your site you want to use, we need it for our next query. Since we want to create an RSS feed,
 we need the title, teaser text and a picture (if available) of all recently modified articles.
 The following snippet shows an example query for this using the "Chef Corp. (US)" site id _abffe57734feeee_:
 
@@ -98,7 +101,7 @@ The following snippet shows an example query for this using the "Chef Corp. (US)
             crops {
               name,
               minWidth              
-            },            
+            }          
           }
         }
       }
@@ -113,9 +116,9 @@ The search query limits the result to 10 items and filters for the content type 
 Using the `... on CMArticle` expression, the search result expands every _CMArticle_ result, using the fields _creationDate_,
 _title_, _teaserText_ and _remoteLink_.
 
-Additionally, we query the picture with it's data. It contains the available crops, minimum sizes, mime type and size which we want to use for our RSS feed.
+Additionally, we query the picture with it's data. It contains the available crops, minimum sizes, mime type and size which we need for the RSS feed.
 
-A single result item of the given list might look like this:
+A single result item of the result might look like this:
 
 ```json
   {
