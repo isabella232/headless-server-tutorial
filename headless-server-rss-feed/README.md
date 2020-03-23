@@ -1,4 +1,4 @@
-# Implementing an RSS Feed with node.js 
+# Implementing an RSS Feed with Node.js 
 
 ## Introduction
 
@@ -7,7 +7,7 @@ The result is a webapp that delivers an RSS feed with selected CoreMedia teaser 
 
 ## Prerequisites
 
-- Make sure that you have node.js installed (this tutorial was developed with node 12.16).
+- Make sure that you have Node.js installed (this tutorial was developed with node 12.16).
 - Make sure that you have npm installed.
 - Make sure that you have access to a CoreMedia system which includes a headless server.
 
@@ -15,7 +15,7 @@ The result is a webapp that delivers an RSS feed with selected CoreMedia teaser 
 
 ### Step 1: Project Setup
 
-For starting the development, we first have to setup a new project first. For node.js this is rather simple:
+For starting the development, we first have to setup a new project first. For Node.js this is rather simple:
 
 - Create a new folder called _headless-server-rss-feed_.
 - Create a new file called _package.json_ within it and paste the following content into it:
@@ -41,38 +41,25 @@ For starting the development, we first have to setup a new project first. For no
 ```
 
 - Create a new file called _index.js_ within it. This is the main executable of our example . 
-We want to start with a simple "Hello World" program. So we create a webserver via node.js that returns a "Hello World" message: 
+We start with configuring the URL of your headless server. Paste the following snippet into your _index.js_ file 
+and replace the _<YOUR_HEADLESS_SERVER_URL>_ with the URL of your headless server. 
+A CoreMedia installation comes with an overview page that contains all important URLs of the system.
+If you are not sure what the headless server URL is, you can also look it up there. 
 
 ```javascript
-var http = require('http');
-
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World!');
-}).listen(8080);
-
-console.log("Started HTTP Server (http://localhost:8080)");
+var headlessServerUrl = "https://<YOUR_HEADLESS_SERVER_URL>/";
+console.log("Using headless server: " + headlessServerUrl);
 ```
 
-You can now open a command line tool and execute the script with:
-
-```
-npm start
-``` 
-
-Visit http://localhost:8080 and you will see the "Hello World!" message.
-
-
-
-
+You can now open a command line tool and execute the script with `npm start`
+and it will simply print the `Using headless server: ...` message.
 
 
 ### Step 2: Build a GraphQL Query for the CoreMedia Headless Server
 
-The default CoreMedia installation comes with a headless server that can be accessed using 'Headless Server' link on the the system overview page.
-In this section you find a _GraphiQL_ link where you can test GraphQL queries in your browser:
+The CoreMedia system overview page also has a _GraphiQL_ link where you can test GraphQL queries against the headless server in your browser:
 
-- Open the you https://<YOUR_COREMEDIA_SYSTEM>/graphiql
+- Open the you https://<YOUR_HEADLESS_SERVER_URL>/graphiql
 - Paste the following query example into the query section of the website and press the execute button in the toolbar.
 
 ```
@@ -102,12 +89,16 @@ The following snippet shows an example query for this using the "Chef Corp. (US)
           title,           
           teaserText,
           remoteLink,
-          picture {
+          picture {            
+            data { 
+              size ,
+              contentType
+            },
             uriTemplate,
             crops {
               name,
               minWidth              
-            }
+            },            
           }
         }
       }
@@ -116,24 +107,35 @@ The following snippet shows an example query for this using the "Chef Corp. (US)
 }
 ```
 
-In this example we are using the search the CoreMedia Blueprint Headless Server provides ootb.
-The search is limited to 10 items and restricted to the content type _CMArticle_ and the site with the id _abffe57734feeee_.
+In this example we are using the search query endpoint of the headless server.
+The search query limits the result to 10 items and filters for the content type _CMArticle_ and the site with id _abffe57734feeee_.
 
-Using the `... on CMArticle` expression, the search result expands every _CMArticle_ result using the fields _creationDate_,
+Using the `... on CMArticle` expression, the search result expands every _CMArticle_ result, using the fields _creationDate_,
 _title_, _teaserText_ and _remoteLink_.
 
-Additionally, we query the picture with it's caas URL which contains the available crops and minimum sizes which we want to use for our RSS feed.
+Additionally, we query the picture with it's data. It contains the available crops, minimum sizes, mime type and size which we want to use for our RSS feed.
 
 A single result item of the given list might look like this:
 
 ```json
   {
-    "creationDate": "2020-02-04T15:56:32Z[GMT]",
-    "title": "You Are The Perfect Chef",
-    "teaserText": "<div><p>New technology allows for so much more. Get a feeling for what is possible.</p></div>",
-    "remoteLink": "//preview.sherlock-labs.testsystem.coremedia.io/blueprint/servlet/corporate/details/you-are-the-perfect-chef-7696",
+    "creationDate": "2020-02-04T15:56:34Z[GMT]",
+    "title": "Delivery",
+    "teaserText": "<div><p>We are committed to delivering and installing expert kitchen and restaurant solutions, with the personal attention you deserve.</p></div>",
+    "remoteLink": "//<YOUR_HEADLESS_SERVER_URL>/blueprint/servlet/corporate/for-professionals/services/delivery-7730",
     "picture": {
-      "uriTemplate": "/caas/v1/media/6916/data/d1cc90760a1b2dbf3059de971d969363/{cropName}/{width}"
+      "data": {
+        "size": 303789,
+        "contentType": "image/jpeg"
+      },
+      "uriTemplate": "/caas/v1/media/7116/data/1db08142083c869d9d4e7e44d909275a/{cropName}/{width}",
+      "crops": [
+        {
+          "name": "landscape_ratio16x9",
+          "minWidth": 400
+        },
+        ...
+      ]
     }
   }
 ```
@@ -142,9 +144,9 @@ A single result item of the given list might look like this:
 
 ### Step 3: Execute GraphQL Query
 
-In this step, we want to query the data using our node.js program. For requesting the data, we are gonna install
-the _node-fetch_ module which support promises and is therefore a little bit more comfortable than the standard http post
-provided by node.js.
+Next, we want to query the data using our Node.js program. For requesting the data, we are gonna install
+the _node-fetch_ module which supports promises and is therefore a little bit more comfortable than the standard http post
+provided by Node.js:
 
 ```
 npm install node-fetch
@@ -156,12 +158,9 @@ Once we have installed _node-fetch_, add the following statement at the beginnin
 var fetch = require("node-fetch");
 ```
 
-Next, paste the following snippet at the end of your _index.js_ and replace the _<YOUR_COREMEDIA_SYSTEM>_ placeholder
-with the domain of your CoreMedia system:
+We can now implement our fetch call. Note that a GraphQL queries are _POST_ requests with mime type _application/json_.
 
 ```javascript
-var headlessServerUrl = "https://<YOUR_COREMEDIA_SYSTEM>/";
-
 function fetchFeedData() {
   return fetch(headlessServerUrl + 'graphql', {
     method: 'POST',
@@ -180,7 +179,11 @@ function fetchFeedData() {
               "          title,           \n" +
               "          teaserText,\n" +
               "          remoteLink,\n" +
-              "          picture {\n" +
+              "          picture {            \n" +
+              "            data { \n" +
+              "              size ,\n" +
+              "              contentType\n" +
+              "            },\n" +
               "            uriTemplate,\n" +
               "            crops {\n" +
               "              name,\n" +
@@ -210,7 +213,6 @@ Execute the program with _npm start_. You should see the following output (assum
 > headless-server-rss-feed@1.0.0 start C:\workspace\headless-server-tutorial\headless-server-rss-feed
 > node index.js
 
-Started HTTP Server (http://localhost:8080)
 data returned: 10
 ```
 
@@ -220,8 +222,8 @@ data returned: 10
 
 ### Step 4: Convert Response JSON to RSS Feed XML
 
-Before our webserver can serve RSS XML, we need to convert the response JSON to XML.
-For creating the feed, we use the library npm library _rss_ (https://www.npmjs.com/package/rss):
+For creating an RSS feed, we need to convert the response JSON to XML.
+We use the library npm library _rss_ (https://www.npmjs.com/package/rss) for this:
 
 ```
 npm install rss
@@ -272,9 +274,19 @@ function formatPictureUrl(picture) {
 }
 ```
 
-### Step 5: Adapting the Server
+The helper function _formatPictureUrl_ ensures that the crop variant with it's minimum with is formatted correctly.
+For the feed, we simply use the first variant.
 
-As a final step, we only have to adapt the webserver to return the XML and the correct mime type: 
+### Step 5: Implementing a Server
+
+As a final step, we need a webserver that serves the RSS feed XML. In Node.js, this is pretty simple to write.
+First, we need the Node.js _http_ package. Add the following line at the beginning of your _index.js_:
+
+```javascript
+var http = require('http');
+```
+
+Then we create and start a server that serves the generated XML:
 
 ```javascript
 http.createServer(function (req, res) {
@@ -283,10 +295,11 @@ http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'application/rss+xml'});
     res.end(xml);
   });
-}).listen(8080);
+}).listen(8081);
+console.log("Started HTTP Server (http://localhost:8081)");
 ```
 
-After these changes our RSS feed is finished. You can restart the server with `npm start` and invoke the URL in browser.
+After these changes our RSS feed is finished. You can restart the server with `npm start` and invoke the logged URL in your browser.
 Assuming you have an RSS reader plugin installed in your browser, the result might look something like this:
 
 ![Example Feed](../images/feed.png "Example Feed")

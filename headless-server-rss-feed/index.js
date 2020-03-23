@@ -2,17 +2,8 @@ var http = require('http');
 var fetch = require("node-fetch");
 var RSS = require('rss');
 
-http.createServer(function (req, res) {
-  fetchFeedData().then(data => {
-    let xml = toFeedXML(data);
-    res.writeHead(200, {'Content-Type': 'application/rss+xml'});
-    res.end(xml);
-  });
-}).listen(8080);
-
-console.log("Started HTTP Server (http://localhost:8080)");
-
 var headlessServerUrl = "https://headless-server-preview.sherlock-labs.testsystem.coremedia.io/";
+console.log("Using headless server: " + headlessServerUrl);
 
 function fetchFeedData() {
   return fetch(headlessServerUrl + 'graphql', {
@@ -32,7 +23,11 @@ function fetchFeedData() {
               "          title,           \n" +
               "          teaserText,\n" +
               "          remoteLink,\n" +
-              "          picture {\n" +
+              "          picture {            \n" +
+              "            data { \n" +
+              "              size ,\n" +
+              "              contentType\n" +
+              "            },\n" +
               "            uriTemplate,\n" +
               "            crops {\n" +
               "              name,\n" +
@@ -73,7 +68,8 @@ function toFeedXML(data) {
       url: 'https:' + entry.remoteLink,
       enclosure: {
         'url'  : formatPictureUrl(entry.picture),
-        'type' : 'image/jpeg'
+        'type' : entry.picture.data.contentType,
+        'size' : entry.picture.data.size
       }
     });
   }
@@ -86,3 +82,13 @@ function formatPictureUrl(picture) {
   let url = picture.uriTemplate.replace('{cropName}', picture.crops[0].name).replace('{width}', picture.crops[0].minWidth);
   return headlessServerUrl + url;
 }
+
+
+http.createServer(function (req, res) {
+  fetchFeedData().then(data => {
+    let xml = toFeedXML(data);
+    res.writeHead(200, {'Content-Type': 'application/rss+xml'});
+    res.end(xml);
+  });
+}).listen(8081);
+console.log("Started HTTP Server (http://localhost:8081)");
