@@ -147,7 +147,7 @@ A single result item of the result might look like this:
 
 ### Step 3: Execute GraphQL Query
 
-Next, we want to query the data using our Node.js program. For requesting the data, we are gonna install
+Next, we want to query the data using our Node.js program. For requesting the data, we are going to install
 the _node-fetch_ module which supports promises and is therefore a little bit more comfortable than the standard http post
 provided by Node.js:
 
