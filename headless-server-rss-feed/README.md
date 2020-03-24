@@ -44,13 +44,14 @@ For starting the development, we have to setup a new project first. For Node.js 
 We start with configuring the URL of our headless server. 
 
 - Paste the following snippet into your _index.js_ file 
-and replace the _<YOUR_HEADLESS_SERVER_URL>_ with the URL of your headless server. 
-
+and replace the _<YOUR_HEADLESS_SERVER_BASE_URL>_ with the base URL of your headless server.
+You can either use the preview or the live URL of the headless server. 
 A CoreMedia installation comes with an overview page that contains all important URLs of the system.
-If you are not sure what the headless server URL is, you can also look it up there. 
+If you are not sure what the headless server URL is, you can also look it up there. Take the URL that points to
+GraphiQL UI and remove the _graphiql_ segment. This URL points to the preview headless server which works for our tutorial.
 
 ```javascript
-var headlessServerUrl = "https://<YOUR_HEADLESS_SERVER_URL>/";
+var headlessServerUrl = "https://<YOUR_HEADLESS_SERVER_BASE_URL>/";
 console.log("Using headless server: " + headlessServerUrl);
 ```
 
@@ -62,7 +63,7 @@ and it will simply print the `Using headless server: ...` message.
 
 The CoreMedia system overview page also has a _GraphiQL_ link where you can run GraphQL queries against the headless server in your browser:
 
-- Open the URL _https://<YOUR_HEADLESS_SERVER_URL>/graphiql_
+- Open the URL _https://<YOUR_HEADLESS_SERVER_BASE_URL>/graphiql_
 - Paste the following query example into the query section of the website and press the execute button in the toolbar.
 
 ```
@@ -84,7 +85,7 @@ The following snippet shows an example query for this using the "Chef Corp. (US)
 ```
 {
   content {
-    search(query: "*", offset: 3, limit: 10, docTypes: ["CMArticle"], sortFields: [MODIFICATION_DATE_ASC], siteId: "abffe57734feeee") {
+    search(query: "*", offset: 0, limit: 10, docTypes: ["CMArticle"], sortFields: [MODIFICATION_DATE_ASC], siteId: "abffe57734feeee") {
       numFound
       result {
         ... on CMArticle {
@@ -125,7 +126,7 @@ A single result item of the result might look like this:
     "creationDate": "2020-02-04T15:56:34Z[GMT]",
     "title": "Delivery",
     "teaserText": "<div><p>We are committed to delivering and installing expert kitchen and restaurant solutions, with the personal attention you deserve.</p></div>",
-    "remoteLink": "//<YOUR_HEADLESS_SERVER_URL>/blueprint/servlet/corporate/for-professionals/services/delivery-7730",
+    "remoteLink": "//<YOUR_HEADLESS_SERVER_BASE_URL>/blueprint/servlet/corporate/for-professionals/services/delivery-7730",
     "picture": {
       "data": {
         "size": 303789,
@@ -174,7 +175,7 @@ function fetchFeedData() {
     body: JSON.stringify({
       query: "{\n" +
               "  content {\n" +
-              "    search(query: \"*\", offset: 3, limit: 10, docTypes: [\"CMArticle\"], sortFields: [MODIFICATION_DATE_ASC], siteId: \"abffe57734feeee\") {\n" +
+              "    search(query: \"*\", offset: 0, limit: 10, docTypes: [\"CMArticle\"], sortFields: [MODIFICATION_DATE_ASC], siteId: \"abffe57734feeee\") {\n" +
               "      numFound\n" +
               "      result {\n" +
               "        ... on CMArticle {\n" +
@@ -277,7 +278,7 @@ function formatPictureUrl(picture) {
 }
 ```
 
-The helper function _formatPictureUrl_ ensures that the crop variant with it's minimum with is formatted correctly.
+The helper function _formatPictureUrl_ ensures that the crop variant with it's minimum width is formatted correctly.
 For the feed, we simply use the first variant.
 
 ### Step 5: Implementing a Server
