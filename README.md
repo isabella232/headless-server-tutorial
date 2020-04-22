@@ -8,3 +8,5 @@
 This repository contains examples of how to use the CoreMedia Headless Server.
 
 - ![Implementing an RSS Feed with Node.js](./headless-server-rss-feed/README.md)
+- ![Implementing a Content Hub Adapter for CoreMedia Headless Server](./content-hub-adapter-headless-server-dam/README.md)
+

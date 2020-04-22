@@ -1,0 +1,8 @@
+{
+  "studioPlugins": [
+    {
+      "mainClass": "com.coremedia.blueprint.studio.contenthub.headlessdam.ContentHubStudioHeadlessDamPlugin",
+      "name": "Headless DAM"
+    }
+  ]
+}
