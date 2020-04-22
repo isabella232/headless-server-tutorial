@@ -3,7 +3,7 @@ package com.coremedia.blueprint.contenthub.adapters.headlessdam.headless;
 /**
  *
  */
-public class Link {
+public class LinkDocument {
   private String id;
 
   public String getId() {

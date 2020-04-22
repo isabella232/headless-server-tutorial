@@ -11,7 +11,7 @@ public class CMTeaseableDocument {
   private String teaserText;
   private String remoteLink;
   private PictureDocument picture;
-  private Link link;
+  private LinkDocument link;
   private String type;
 
   public CMTeaseableDocument getContent() {
@@ -54,11 +54,11 @@ public class CMTeaseableDocument {
     this.remoteLink = remoteLink;
   }
 
-  public Link getLink() {
+  public LinkDocument getLink() {
     return link;
   }
 
-  public void setLink(Link link) {
+  public void setLink(LinkDocument link) {
     this.link = link;
   }
 
