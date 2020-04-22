@@ -268,5 +268,5 @@ be accessed through the Content Hub in the CoreMedia Studio.
 
 We've shown how the Headless Server requests can be implemented via Spring Rest Templates.
 If you have to build more complex GraphQL queries for the Headless Server it's worth to try the 
-https://www.apollographql.com/ framework which is the industry-standard GraphQL implementation, 
+Apollo framework (https://www.apollographql.com/) which is the industry-standard GraphQL implementation, 
 providing the data graph layer that connects modern apps to the cloud.  
