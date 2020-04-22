@@ -258,3 +258,13 @@ For example, for __id__ "2022" the YAML of the GraphQL query would look like thi
 The query executed by the __HeadlessServerConnector__ returns a __QueryResponseDocument__.
 The __HeadlessDAMContentHubAdapter__ access the result via __queryResponseDocument.getData().getContent().getContent()__
 and converts the __CMTeaseableDocument__ into a Content Hub item.
+
+## Conclusion
+
+We've demonstrated how the Headless Server can be used to access assets and shown how these assets can
+be accessed through the Content Hub in the CoreMedia Studio.
+
+We've shown how the Headless Server requests can be implemented via Spring rest templates.
+If you have to build more complex GraphQL queries for the Headless Server it's worth to try the 
+https://www.apollographql.com/ framework which is the industry-standard GraphQL implementation, 
+providing the data graph layer that connects modern apps to the cloud.  
