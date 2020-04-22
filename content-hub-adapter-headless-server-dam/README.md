@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This tutorial describes how to implement a CoreMedia Content Hub adapter (called "Headless DAM") that connects with the CoreMedia headless server.
+This tutorial describes how to implement a CoreMedia Content Hub adapter (called "Headless DAM") that connects with the CoreMedia Headless Server.
 It shows how the Headless Server can be used from external systems to serve CoreMedia content and assets.
 
 
