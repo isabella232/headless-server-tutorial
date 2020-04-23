@@ -2,8 +2,15 @@
 
 ## Introduction
 
-This tutorial describes how to implement a CoreMedia Content Hub adapter (called "Headless DAM") that connects with the CoreMedia Headless Server.
-It shows how the Headless Server can be used from external systems to serve CoreMedia content and assets.
+In this tutorial we show how a Headless Server client can be implemented with Java in order to access CoreMedia assets.
+It can be used for integrations into a digital asset management systems (DAM), social media or marketing tools.
+ 
+We simulate a DAM here by writing an integration for the CoreMedia Content Hub as well.
+While it is not useful to access CoreMedia through the Content Hub/Headless Server from CoreMedia, this example
+shows
+ 
+- how easy the Headless Server can be integrated into external systems.
+- how the Content Hub can be used to connect with external systems.
 
 
 ![Headless Server in Studio Library](../images/headless-dam-library.png "Headless Server in Studio Library")
@@ -130,7 +137,7 @@ picturesFolder = new HeadlessDAMFolder("Pictures", picturesId, new ContentHubTyp
 ```
 
 They are returned by the __getFolder__ method which returns the folder 
-depending on the given external stored in the __ContentHubObjectId__.
+depending on the given __externalId__ stored in the __ContentHubObjectId__.
 
 ```java
   @Nullable
