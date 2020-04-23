@@ -15,18 +15,18 @@ shows
 
 ![Headless Server in Studio Library](../images/headless-dam-library.png "Headless Server in Studio Library")
 
+Because the sources of the tutorial are more complex, we start with integrating the resulting code of the tutorial into the CoreMedia workspace.
+We then explain the details and important parts of the code. 
+
 ## Prerequisites
 
 This tutorial assumes that you have already developed with the CoreMedia Blueprint workspace.
 It also assumes that you already know what the CoreMedia Content Hub is.
 
-Because the sources of tutorial are more complex, we start with integrating the finished tutorial into the CoreMedia workspace.
-We then explain the details and important parts of the code. 
-
 ## Project Setup
 
-This sources of this tutorial are setup as a CoreMedia extension. 
-You can install the extension by copying the _content-hub-adapter-headless-server-dam_ folder 
+The sources of this tutorial are provided as a CoreMedia extension. 
+Install the extension by copying the _content-hub-adapter-headless-server-dam_ folder 
 into the _modules/extensions/_ folder of your CoreMedia workspace. If they do not exist, just create these folders.
 
 After copying, use the extension tool in the root folder of the workspace to link the extensions into the CoreMedia apps:
@@ -35,28 +35,28 @@ After copying, use the extension tool in the root folder of the workspace to lin
 mvn -f workspace-configuration/extensions com.coremedia.maven:extensions-maven-plugin:LATEST:sync -Denable=content-hub-adapter-headless-server-dam
 ```
 
-Once the extension tool has been executed successfully, rebuild the workspace. You can now start your Studio.
-The Content Hub extension "Headless DAM" is already part of your Studio, but we have to provide a configuration
-in order to enable it.
+Once the extension tool has been executed successfully, rebuild the workspace and afterwards start your Studio.
+The Content Hub extension "Headless DAM" is now part of your Studio, but you have to provide a configuration
+in order to enable the extension.
 
 The Content Hub allows global, site-specific and user-specific connections.
-We simply create the connection settings document _Headless DAM_ in the global settings folder for the Content Hub:
+Simply create the connection settings document _Headless DAM_ in the global settings folder of the Content Hub:
 
 ![Headless Server Configuration](../images/headless-dam-config-1.png "Headless Server Configuration")
 
-Inside the document make sure to configure the _settings_ section as described below: 
+Inside the document configure the _settings_ section as described below: 
 
 ![Headless Server Configuration](../images/headless-dam-config-2.png "Headless Server Configuration")
 
 | Property          | Description   |
 | ----------------- | ------------- |
-| siteId            | The site id of the CoreMedia site the adapter should retrieve assets from |
+| siteId            | The site ID of the CoreMedia site from which the adapter should retrieve assets |
 | displayName       | The display name of the root node inside the Studio library |
 | headlessServerUrl | The headless server URL (without 'graphql' suffix!) |
 
 Note that the value of the _headlessServerUrl_ can be the preview or live URL of the headless server.
 
-Additional XML export of the "Head DAM" settings document:
+The XML export of the "Head DAM" settings document looks like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -87,7 +87,7 @@ Additional XML export of the "Head DAM" settings document:
 </CMSettings>
 ```
 
-After creating the settings document, reload the Studio. 
+After creating the settings document, reload Studio. 
 The headless server folder inside the Studio library should be visible and assets can be browsed.
 
 
@@ -99,7 +99,7 @@ The sources of this tutorial consist of two Maven modules:
 #### Module _headless-server-dam-studio_ 
 
 This module contains the Studio sources for the Content Hub adapter. It contains only resource bundles and 
-no additional logic. Therefore we skip additional explanations here.
+no additional logic. 
 
 For details of how to customize labels and icons for a Content Hub adapter, 
 please check the section "Customizing Labels and Icons"
@@ -108,9 +108,14 @@ in the Content Hub chapter of the Studio Developer Guide (https://documentation.
 #### Module _headless-server-dam-studio-lib_
 
 This module contains the Java sources of the Headless DAM Content Hub adapter.
-It consists of two parts: the classes required for the adapter and the classes which implement the access to the Headless Server. 
+It consists of two parts: 
 
-The setup of the adapter is pretty straight forward. The entry point of the adapter is the Spring configuration class
+* The classes required for the adapter
+* The classes which implement access to the Headless Server 
+
+The setup of the adapter is pretty straight forward: 
+
+The entry point of the adapter is the Spring configuration class
 __HeadlessDAMConfiguration__ which creates the __HeadlessDAMContentHubAdapterFactory__ which then creates instances 
 of the __HeadlessDAMContentHubAdapter__ for each connection configuration found during runtime.
 
@@ -159,7 +164,7 @@ depending on the given __externalId__ stored in the __ContentHubObjectId__.
   }
 ```
 
-We only need two different Headless Server calls to retrieve the Content Hub items for each of these folders.
+You only need two different Headless Server calls to retrieve the Content Hub items for each of these folders.
 
 - One call to search all items of the given media type, returned by the method __public List<Item> getItems(@NonNull ContentHubContext context, @NonNull Folder folder)__.
 - One call to retrieve the details of each item, returned by the method __public Item getItem(@NonNull ContentHubContext context, @NonNull ContentHubObjectId id)__.
@@ -265,13 +270,13 @@ For example, for __id__ "2022" the YAML of the GraphQL query would look like thi
 ```
 
 The query executed by the __HeadlessServerConnector__ returns a __QueryResponseDocument__.
-The __HeadlessDAMContentHubAdapter__ access the result via __queryResponseDocument.getData().getContent().getContent()__
+The __HeadlessDAMContentHubAdapter__ accesses the result via __queryResponseDocument.getData().getContent().getContent()__
 and converts the __CMTeaseableDocument__ into a Content Hub item.
 
 ## Conclusion
 
-We've demonstrated how the Headless Server can be used to access assets and shown how these assets can
-be accessed through the Content Hub in the CoreMedia Studio.
+We've demonstrated how the Headless Server can be used to access assets and have shown how these assets can
+be accessed through the Content Hub in CoreMedia Studio.
 
 We've shown how the Headless Server requests can be implemented via Spring Rest Templates.
 If you have to build more complex GraphQL queries for the Headless Server it's worth to try the 
