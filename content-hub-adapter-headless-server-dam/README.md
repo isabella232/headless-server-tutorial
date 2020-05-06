@@ -4,7 +4,7 @@
 
 The implementation of this tutorial may differ depending on the CoreMedia version you are using.
 To ensure that the version is compatible, please check for the corresponding branch name.
-For example, if your CoreMedia version is 2001.2, checkout the branch "2001.2" of this tutorial. 
+For example, if your CoreMedia version is _2001.2_, checkout the branch _2001.2_ of this tutorial. 
 
 ## Introduction
 
