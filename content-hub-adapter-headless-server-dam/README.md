@@ -1,5 +1,11 @@
 # Implementing a Content Hub Adapter for CoreMedia Assets
 
+## Versioning
+
+The implementation of this tutorial may differ depending on the CoreMedia version you are using.
+To ensure that the version is compatible, please check for the corresponding branch name.
+For example, if your CoreMedia version is 2001.2, checkout the branch "2001.2" of this tutorial. 
+
 ## Introduction
 
 In this tutorial we show how a Headless Server client can be implemented with Java in order to access CoreMedia assets.
