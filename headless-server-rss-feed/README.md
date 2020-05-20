@@ -44,9 +44,7 @@ Start with configuring the URL of the Headless Server.
 
 4. Paste the following snippet into your _index.js_ file, 
 and replace the _<YOUR_HEADLESS_SERVER_BASE_URL>_ with the base URL of your Headless Server.
-You can either use the preview or the live URL of the Headless Server. 
-
-A CoreMedia installation comes with an overview page that contains all important URLs of the system.
+You can either use the preview or the live URL of the Headless Server. A CoreMedia installation comes with an overview page that contains all important URLs of the system.
 If you are not sure what the Headless Server's URL is, you can also look it up there. Take the URL that points to
 GraphiQL UI, and remove the _graphiql_ segment. This URL points to the preview Headless Server which works for the tutorial.
 
