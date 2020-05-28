@@ -225,7 +225,7 @@ data returned: 10
 ### Step 4: Convert Response JSON to RSS Feed XML
 
 For creating an RSS feed, you need to convert the response JSON to XML.
-Use the library npm library _rss_ (https://www.npmjs.com/package/rss) for this:
+Use the library _rss_ (https://www.npmjs.com/package/rss) for this:
 
 ```
 npm install rss
