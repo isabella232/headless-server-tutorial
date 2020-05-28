@@ -15,7 +15,7 @@ shows
 
 ![Headless Server in Studio Library](../images/headless-dam-library.png "Headless Server in Studio Library")
 
-Because the sources of the tutorial are more complex, we start with integrating the resulting code of the tutorial into the CoreMedia workspace.
+Because this example is more complex, we start the tutorial by adding all sources to a CoreMedia workspace.
 We then explain the details and important parts of the code. 
 
 ## Prerequisites
